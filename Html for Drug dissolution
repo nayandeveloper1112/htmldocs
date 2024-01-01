@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablet Dissolution Profile</title>
+    <script>
+        function simulateDissolution() {
+            var dissolutionTime = 24;
+            var dissolutionRate = 4;
+            
+            var timePoints = [];
+            var dissolvedPercentage = [0];
+
+            for (var time = 1; time <= dissolutionTime; time++) {
+                var dissolutionPercentage = dissolvedPercentage[dissolvedPercentage.length - 1] + dissolutionRate;
+                dissolvedPercentage.push(Math.min(100, dissolutionPercentage));
+                timePoints.push(time);
+            }
+
+            plotDissolutionProfile(timePoints, dissolvedPercentage);
+        }
+
+        function plotDissolutionProfile(timePoints, dissolvedPercentage) {
+            var ctx = document.getElementById('dissolutionChart').getContext('2d');
+
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timePoints,
+                    datasets: [{
+                        label: 'Dissolved Percentage',
+                        data: dissolvedPercentage,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        pointRadius: 5,
+                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: {
+                                display: true,
+                                text: 'Time (hours)'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Dissolved Percentage'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Tablet Dissolution Profile</h1>
+    <button onclick="simulateDissolution()">Simulate Dissolution</button>
+    <canvas id="dissolutionChart" width="400" height="200"></canvas>
+</body>
+</html>
